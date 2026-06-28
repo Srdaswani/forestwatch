@@ -204,7 +204,7 @@ def init_ee(project_id: str):
             with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
                 json.dump(creds_json, f)
                 key_file = f.name
-            service_account = "forestwatch-service@ee-deforestation-499600.iam.gserviceaccount.com"
+            service_account = "forestwatch-service@ee-deforestation-2.iam.gserviceaccount.com"
             credentials = ee.ServiceAccountCredentials(service_account, key_file)
             ee.Initialize(credentials=credentials, project=project_id)
             os.unlink(key_file)
@@ -302,7 +302,7 @@ with st.sidebar:
     st.markdown('<div class="fw-section-label" style="margin-top:1.2rem">Earth Engine</div>', unsafe_allow_html=True)
     ee_project = st.text_input(
         "GEE Project ID",
-        value="ee-deforestation-499600",
+        value="ee-deforestation-2",
         help="Your Google Earth Engine project ID"
     )
 
