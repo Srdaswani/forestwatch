@@ -199,7 +199,17 @@ def load_model(model_path: str):
 @st.cache_resource
 def init_ee(project_id: str):
     try:
-        ee.Initialize(project=project_id)
+        if "GEE_CREDENTIALS" in st.secrets:
+            creds_json = json.loads(st.secrets["GEE_CREDENTIALS"])
+            with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+                json.dump(creds_json, f)
+                key_file = f.name
+            service_account = "forestwatch-service@ee-deforestation-2.iam.gserviceaccount.com"
+            credentials = ee.ServiceAccountCredentials(service_account, key_file)
+            ee.Initialize(credentials=credentials, project=project_id)
+            os.unlink(key_file)
+        else:
+            ee.Initialize(project=project_id)
         return True
     except Exception as e:
         return str(e)
